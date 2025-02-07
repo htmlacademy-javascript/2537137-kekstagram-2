@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Анна Данюк](https://up.htmlacademy.ru/javascript-individual/2/user/2537137).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хабиров] (https://htmlacademy.ru/profile/alex_khab).
 
 ---
 
