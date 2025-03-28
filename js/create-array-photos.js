@@ -52,8 +52,6 @@ const createPhoto = () => {
 };
 
 // Создание массива описаний для фотографий
-const photos = () => Array.from({length: PHOTO_QUANTITY}, createPhoto());
+const makePhotos = () => Array.from({length: PHOTO_QUANTITY}, createPhoto());
 
-console.log(photos());
-
-export {photos};
+export {makePhotos};
