@@ -1,3 +1,4 @@
-import './create-array-photos.js';
+import {makePhotos} from './create-array-photos.js';
+console.log(makePhotos());
 
 
