@@ -51,3 +51,21 @@ const getNumber = (string) => {
 };
 
 getNumber('2023 год');
+
+const getTime = (startWork, endWork, startMeeting, meetingDuration) => {
+  const dayStartMinutes = timeToMinutes(startWork);
+  const dayEndMinutes = timeToMinutes(endWork);
+  const meetingStartMinutes = timeToMinutes(startMeeting);
+  const meetingEndMinutes = meetingStartMinutes + meetingDuration;
+
+  return meetingStartMinutes >= dayStartMinutes && meetingEndMinutes <= dayEndMinutes;
+};
+
+function timeToMinutes(time) {
+  const parts = time.split(':').map(Number);
+  const hours = parts[0];
+  const minutes = parts[1];
+  return hours * 60 + minutes;
+}
+
+getTime('08:00', '17:30', '14:00', 90);
