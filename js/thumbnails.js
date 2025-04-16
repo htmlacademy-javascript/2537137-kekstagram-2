@@ -1,5 +1,3 @@
-import { makePhotos } from './create-array-photos.js';
-
 const template = document.querySelector('#picture')
   .content
   .querySelector('.picture');
@@ -20,9 +18,12 @@ const createThumbnail = (photo) => {
   return thumbnail;
 };
 
-makePhotos().forEach((photo) => {
-  fragment.append(createThumbnail(photo));
-});
+const renderThumbnails = (pictures) => {
+  pictures.forEach((photo) => {
+    fragment.append(createThumbnail(photo));
+  });
 
-container.append(fragment);
+  container.append(fragment);
+};
 
+export { renderThumbnails };
