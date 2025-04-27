@@ -4,5 +4,5 @@ import { initPreview } from './render-photo.js';
 
 const photos = makePhotos();
 renderThumbnails(photos);
-initPreview();
+initPreview(photos);
 
