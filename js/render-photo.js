@@ -71,8 +71,6 @@ const renderBigPicture = (currentPhoto) => {
   currentComments = currentPhoto.comments;
   shownCommentsCount = 0;
 
-  commentsCount.classList.remove('hidden');
-  commentsLoader.classList.remove('hidden');
   bigPicture.classList.remove('hidden');
 
   loadNextComments();

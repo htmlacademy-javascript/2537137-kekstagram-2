@@ -42,9 +42,10 @@ function initUploadModal () {
 }
 
 const pristine = new Pristine(uploadForm, {
-  classTo: 'img-upload__form',
+  classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
   errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'p',
 });
 
 const onHashtagInput = () => {
