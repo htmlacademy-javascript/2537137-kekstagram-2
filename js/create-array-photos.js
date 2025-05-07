@@ -1,5 +1,5 @@
-import {getRandomInteger} from './util.js';
-import {MESSAGES, NAMES, DESCRIPTIONS} from './data.js';
+import { getRandomInteger } from './util.js';
+import { MESSAGES, NAMES, DESCRIPTIONS } from './data.js';
 
 const PHOTO_QUANTITY = 25;
 
@@ -27,9 +27,9 @@ const getComment = () => {
 
     return {
       id,
-      avatar: `img/avatar-${getRandomInteger(ImgAvatar.MIN, ImgAvatar.MAX)}.svg`,
-      message: `${MESSAGES[getRandomInteger(0, MESSAGES.length - 1)]}`,
-      name: `${NAMES[getRandomInteger(0, NAMES.length - 1)]}`
+      avatar: `img/avatar-${ getRandomInteger(ImgAvatar.MIN, ImgAvatar.MAX) }.svg`,
+      message: `${ MESSAGES[getRandomInteger(0, MESSAGES.length - 1)] }`,
+      name: `${ NAMES[getRandomInteger(0, NAMES.length - 1)] }`
     };
   };
 };
@@ -46,12 +46,12 @@ const createPhoto = () => {
       url: `photos/${id}.jpg`,
       description: DESCRIPTIONS[getRandomInteger(0, DESCRIPTIONS.length - 1)],
       likes: getRandomInteger(Likes.MIN, Likes.MAX),
-      comments: Array.from({length: getRandomInteger(Comments.FROM, Comments.TO)}, getComment())
+      comments: Array.from({ length: getRandomInteger(Comments.FROM, Comments.TO) }, getComment())
     };
   };
 };
 
 // Создание массива описаний для фотографий
-const makePhotos = () => Array.from({length: PHOTO_QUANTITY}, createPhoto());
+const makePhotos = () => Array.from({ length: PHOTO_QUANTITY }, createPhoto());
 
-export {makePhotos};
+export { makePhotos };

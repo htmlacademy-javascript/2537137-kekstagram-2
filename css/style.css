@@ -286,7 +286,6 @@ main {
   margin: 0 auto;
   padding-bottom: 60px;
   width: 582px;
-
   text-align: center;
 }
 
@@ -718,7 +717,6 @@ main {
   z-index: 10000;
   position: relative;
 }
-
 
 /**
  * Кнопка для отправки изображения
