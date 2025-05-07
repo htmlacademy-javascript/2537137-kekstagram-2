@@ -84,8 +84,6 @@ const renderBigPicture = (currentPhoto) => {
 
 const initPreview = (photos) => {
   picturesContainer.addEventListener('click', (evt) => {
-    evt.preventDefault();
-
     const currentPicture = evt.target.closest('.picture');
 
     if(!currentPicture) {
@@ -95,6 +93,7 @@ const initPreview = (photos) => {
     const currentPhoto = photos.find((photo) => photo.id === Number(currentPicture.dataset.pictureId));
 
     if (currentPhoto) {
+      evt.preventDefault();
       renderBigPicture(currentPhoto);
     }
   });
