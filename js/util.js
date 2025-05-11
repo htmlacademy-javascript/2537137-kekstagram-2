@@ -6,7 +6,7 @@ const getRandomInteger = (a, b) => {
   return Math.floor(result);
 };
 
-const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
+const pluralize = (num, nominative, genitiveSingular, genitivePlural) => {
   if (num % 10 === 0 || num % 100 > 4 && num % 100 < 21) {
     return genitivePlural;
   }
@@ -14,4 +14,4 @@ const numDecline = (num, nominative, genitiveSingular, genitivePlural) => {
   return num % 10 === 1 ? nominative : genitiveSingular;
 };
 
-export {getRandomInteger, numDecline};
+export { getRandomInteger, pluralize };
