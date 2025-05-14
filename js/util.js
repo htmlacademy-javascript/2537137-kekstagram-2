@@ -14,4 +14,6 @@ const pluralize = (num, nominative, genitiveSingular, genitivePlural) => {
   return num % 10 === 1 ? nominative : genitiveSingular;
 };
 
-export { getRandomInteger, pluralize };
+const isEscKey = (evt) => evt.key === 'Escape';
+
+export { getRandomInteger, pluralize, isEscKey };
