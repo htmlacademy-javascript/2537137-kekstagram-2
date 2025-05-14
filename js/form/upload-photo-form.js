@@ -35,7 +35,7 @@ const onEscKeydown = (evt) => {
 };
 
 const updateImageScale = () => {
-  const scaleValue = currentScale / 100;
+  const scaleValue = currentScale / MAX_SCALE;
   imgPreview.style.transform = `scale(${scaleValue})`;
   scaleControl.value = `${currentScale}%`;
 };
@@ -60,17 +60,15 @@ const onUploadFileChange = () => {
 };
 
 const onSmallerButtonClick = () => {
-  if (currentScale > MIN_SCALE) {
-    currentScale -= SCALE_STEP;
-    updateImageScale();
-  }
+  currentScale -= SCALE_STEP;
+  currentScale = Math.max(MIN_SCALE, currentScale);
+  updateImageScale();
 };
 
 const onBiggerButtonClick = () => {
-  if (currentScale < MAX_SCALE) {
-    currentScale += SCALE_STEP;
-    updateImageScale();
-  }
+  currentScale += SCALE_STEP;
+  currentScale = Math.min(currentScale, MAX_SCALE);
+  updateImageScale();
 };
 
 const onFormSubmit = (evt) => {

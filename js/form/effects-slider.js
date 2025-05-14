@@ -1,58 +1,21 @@
+import { EFFECTS } from '../data.js';
+
 const effectLevelContainer = document.querySelector('.img-upload__effect-level');
 const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
 const effectsList = document.querySelector('.effects__list');
-const imgPreview = document.querySelector('.img-upload__preview');
+const imgPreview = document.querySelector('.img-upload__preview img');
 
 let currentEffect = 'none';
-
-const effects = {
-  none: {
-    min: 0,
-    max: 100,
-    step: 1,
-    filter: () => 'none'
-  },
-  chrome: {
-    min: 0,
-    max: 1,
-    step: 0.1,
-    filter: (value) => `grayscale(${value})`
-  },
-  sepia: {
-    min: 0,
-    max: 1,
-    step: 0.1,
-    filter: (value) => `sepia(${value})`
-  },
-  marvin: {
-    min: 0,
-    max: 100,
-    step: 1,
-    filter: (value) => `invert(${value}%)`
-  },
-  phobos: {
-    min: 0,
-    max: 3,
-    step: 0.1,
-    filter: (value) => `blur(${value}px)`
-  },
-  heat: {
-    min: 1,
-    max: 3,
-    step: 0.1,
-    filter: (value) => `brightness(${value})`
-  }
-};
 
 const createSlider = () => {
   noUiSlider.create(effectLevelSlider, {
     range: {
-      min: effects.none.min,
-      max: effects.none.max
+      min: EFFECTS.none.min,
+      max: EFFECTS.none.max
     },
-    start: effects.none.max,
-    step: effects.none.step,
+    start: EFFECTS.none.max,
+    step: EFFECTS.none.step,
     connect: 'lower',
     format: {
       to: (value) => Number(value),
@@ -65,7 +28,7 @@ const createSlider = () => {
     effectLevelValue.value = value;
     imgPreview.style.filter = currentEffect === 'none'
       ? 'none'
-      : effects[currentEffect].filter(value);
+      : EFFECTS[currentEffect].filter(value);
   });
 };
 
@@ -74,20 +37,15 @@ const updateSliderOptions = ({ min, max, step }) => {
     range: { min, max },
     start: max,
     step,
-    format: {
-      to: (value) => (Number.isInteger(value) ? value : value.toFixed(1)),
-      from: (value) => parseFloat(value)
-    }
   });
 };
 
 const onEffectsListChange = (evt) => {
-  if (!evt.target.matches('input[type="radio"]')) {
+  if (!evt.target.id) {
     return;
   }
 
   currentEffect = evt.target.value;
-  imgPreview.className = `effects__preview--${currentEffect}`;
 
   if (currentEffect === 'none') {
     effectLevelContainer.classList.add('hidden');
@@ -96,16 +54,14 @@ const onEffectsListChange = (evt) => {
   }
 
   effectLevelContainer.classList.remove('hidden');
-  updateSliderOptions(effects[currentEffect]);
+  updateSliderOptions(EFFECTS[currentEffect]);
 };
 
 const resetEffects = () => {
   currentEffect = 'none';
-  effectLevelSlider.noUiSlider.set(effects.none.max);
-  imgPreview.className = 'effects__preview--none';
+  effectLevelSlider.noUiSlider.set(EFFECTS.none.max);
   imgPreview.style.filter = 'none';
   effectLevelContainer.classList.add('hidden');
-  document.querySelector('#effect-none').checked = true;
 };
 
 const initEffectsSlider = () => {
