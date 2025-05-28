@@ -1,11 +1,17 @@
 import { setupValidation, validateForm } from './validation.js';
 import { initEffectsSlider, resetEffects } from './effects-slider.js';
 import { isEscKey } from '../util.js';
+import { sendData } from '../api.js';
+import { showNotification } from '../modal-messages.js';
 
 const SCALE_STEP = 25;
 const MIN_SCALE = 25;
 const MAX_SCALE = 100;
 const DEFAULT_SCALE = 100;
+const SUBMIT_BUTTON_TEXT = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую...'
+};
 
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
@@ -18,6 +24,7 @@ const smallerButton = uploadForm.querySelector('.scale__control--smaller');
 const biggerButton = uploadForm.querySelector('.scale__control--bigger');
 const imgPreview = uploadForm.querySelector('.img-upload__preview img');
 const scaleControl = uploadForm.querySelector('.scale__control--value');
+const uploadSubmit = uploadForm.querySelector('#upload-submit');
 
 let currentScale = DEFAULT_SCALE;
 
@@ -71,15 +78,48 @@ const onBiggerButtonClick = () => {
   updateImageScale();
 };
 
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
+const disabledButton = (text) => {
+  uploadSubmit.disabled = true;
+  uploadSubmit.textContent = text;
+};
 
+const enabledButton = (text) => {
+  uploadSubmit.disabled = false;
+  uploadSubmit.textContent = text;
+};
+
+const onFormData = async (formElement) => {
   const isValid = validateForm();
   if (isValid) {
-    uploadForm.reset();
-    closePhotoEditor();
+    disabledButton(SUBMIT_BUTTON_TEXT.SENDING);
+
+    try {
+      await sendData(new FormData(formElement));
+      closePhotoEditor();
+      uploadForm.reset();
+      showNotification('success');
+    } catch (error) {
+      showNotification('error');
+    } finally {
+      enabledButton(SUBMIT_BUTTON_TEXT.IDLE);
+    }
   }
 };
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  onFormData(evt.target);
+};
+
+// const onFormSubmit = (evt) => {
+//   evt.preventDefault();
+
+// const isValid = validateForm();
+//   if (isValid) {
+//     uploadForm.reset();
+//     closePhotoEditor();
+//   }
+// };
 
 const initUploadModal = () => {
   uploadFile.addEventListener('change', onUploadFileChange);
