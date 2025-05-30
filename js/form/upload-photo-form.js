@@ -78,48 +78,35 @@ const onBiggerButtonClick = () => {
   updateImageScale();
 };
 
-const disabledButton = (text) => {
+const disableButton = (text) => {
   uploadSubmit.disabled = true;
   uploadSubmit.textContent = text;
 };
 
-const enabledButton = (text) => {
+const enableButton = (text) => {
   uploadSubmit.disabled = false;
   uploadSubmit.textContent = text;
 };
 
-const onFormData = async (formElement) => {
+const onFormSubmit = async (evt) => {
+  evt.preventDefault();
+
   const isValid = validateForm();
   if (isValid) {
-    disabledButton(SUBMIT_BUTTON_TEXT.SENDING);
+    disableButton(SUBMIT_BUTTON_TEXT.SENDING);
 
     try {
-      await sendData(new FormData(formElement));
+      await sendData(new FormData(evt.target));
       closePhotoEditor();
       uploadForm.reset();
       showNotification('success');
     } catch (error) {
       showNotification('error');
     } finally {
-      enabledButton(SUBMIT_BUTTON_TEXT.IDLE);
+      enableButton(SUBMIT_BUTTON_TEXT.IDLE);
     }
   }
 };
-
-const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  onFormData(evt.target);
-};
-
-// const onFormSubmit = (evt) => {
-//   evt.preventDefault();
-
-// const isValid = validateForm();
-//   if (isValid) {
-//     uploadForm.reset();
-//     closePhotoEditor();
-//   }
-// };
 
 const initUploadModal = () => {
   uploadFile.addEventListener('change', onUploadFileChange);

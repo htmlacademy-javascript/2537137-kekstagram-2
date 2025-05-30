@@ -1,5 +1,13 @@
 import { isEscKey } from './util.js';
 
+const successTemplate = document.body.querySelector('#success').content.querySelector('.success');
+const errorTemplate = document.body.querySelector('#error').content.querySelector('.error');
+
+const notificationTemplates = {
+  success: successTemplate,
+  error: errorTemplate
+};
+
 const REMOVE_TIMEOUT = 5000;
 
 const showErrorMessage = (message) => {
@@ -21,25 +29,29 @@ const showErrorMessage = (message) => {
 };
 
 const showNotification = (notification) => {
-  const body = document.body;
-  const template = document.querySelector(`#${ notification }`).content;
-  body.append(template);
-  const button = document.querySelector(`.${ notification }__button`);
-  const modal = document.querySelector(`.${ notification }`);
+  const template = notificationTemplates(notification);
+  const node = template.cloneNode(true);
+
+  document.body.append(node);
+
+  const button = node.querySelector(`.${ notification }__button`);
+
+  const closeNotification = () => {
+    node.remove();
+    document.removeEventListener('keydown', onDocumentKeydown);
+  };
 
   button.addEventListener('click', (evt) => {
-    evt.stopPropagation();
-    modal.remove();
-    document.removeEventListener('keydown', handlerEscModal);
+    evt.preventDefault();
+    closeNotification();
   });
 
-  document.addEventListener('keydown', handlerEscModal);
+  document.addEventListener('keydown', onDocumentKeydown);
 
-  function handlerEscModal (evt) {
+  function onDocumentKeydown (evt) {
     if(isEscKey(evt)) {
       evt.preventDefault();
-      modal.remove();
-      document.removeEventListener('keydown', handlerEscModal);
+      closeNotification();
     }
   }
 };
