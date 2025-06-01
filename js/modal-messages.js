@@ -46,14 +46,6 @@ const showNotification = (type) => {
     }
   });
 
-  const button = node.querySelector(`.${type}__button`);
-  if (button) {
-    button.addEventListener('click', (evt) => {
-      evt.preventDefault();
-      closeNotification();
-    });
-  }
-
   const onDocumentKeydown = (evt) => {
     if (isEscKey(evt)) {
       evt.preventDefault();
