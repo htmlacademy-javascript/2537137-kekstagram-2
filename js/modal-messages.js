@@ -46,12 +46,12 @@ const showNotification = (type) => {
     }
   });
 
-  const onDocumentKeydown = (evt) => {
+  function onDocumentKeydown(evt) {
     if (isEscKey(evt)) {
       evt.preventDefault();
       closeNotification();
     }
-  };
+  }
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
