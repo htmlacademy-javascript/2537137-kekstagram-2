@@ -16,4 +16,12 @@ const pluralize = (num, nominative, genitiveSingular, genitivePlural) => {
 
 const isEscKey = (evt) => evt.key === 'Escape';
 
-export { getRandomInteger, pluralize, isEscKey };
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { getRandomInteger, pluralize, isEscKey, debounce };
