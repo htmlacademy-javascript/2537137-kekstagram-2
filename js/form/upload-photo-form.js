@@ -13,6 +13,8 @@ const SUBMIT_BUTTON_TEXT = {
   SENDING: 'Публикую...'
 };
 
+const FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif', 'jfif'];
+
 const uploadForm = document.querySelector('.img-upload__form');
 const pageBody = document.querySelector('body');
 const uploadFile = uploadForm.querySelector('#upload-file');
@@ -23,6 +25,7 @@ const commentInput = uploadForm.querySelector('.text__description');
 const smallerButton = uploadForm.querySelector('.scale__control--smaller');
 const biggerButton = uploadForm.querySelector('.scale__control--bigger');
 const imgPreview = uploadForm.querySelector('.img-upload__preview img');
+const uploadPreviewEffects = document.querySelectorAll('.effects__preview');
 const scaleControl = uploadForm.querySelector('.scale__control--value');
 const uploadSubmit = uploadForm.querySelector('#upload-submit');
 
@@ -41,6 +44,27 @@ const onEscKeydown = (evt) => {
   }
 };
 
+function onFileInputChange() {
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
+  const fileExt = fileName.split('.').pop();
+  const matches = FILE_TYPES.includes(fileExt);
+
+  if (matches) {
+    const url = URL.createObjectURL(file);
+
+    imgPreview.src = url;
+    uploadPreviewEffects.forEach((item) => {
+      item.style.backgroundImage = `url(${url})`;
+    });
+
+    photoEditorForm.classList.remove('hidden');
+    pageBody.classList.add('modal-open');
+    photoEditorResetButton.addEventListener('click', onPhotoEditorResetButtonClick);
+    document.addEventListener('keydown', onEscKeydown);
+  }
+}
+
 const updateImageScale = () => {
   const scaleValue = currentScale / MAX_SCALE;
   imgPreview.style.transform = `scale(${scaleValue})`;
@@ -57,14 +81,6 @@ function closePhotoEditor() {
   updateImageScale();
   resetEffects();
 }
-
-const onUploadFileChange = () => {
-  photoEditorForm.classList.remove('hidden');
-  pageBody.classList.add('modal-open');
-  photoEditorResetButton.addEventListener('click', onPhotoEditorResetButtonClick);
-
-  document.addEventListener('keydown', onEscKeydown);
-};
 
 const onSmallerButtonClick = () => {
   currentScale -= SCALE_STEP;
@@ -109,7 +125,7 @@ const onFormSubmit = async (evt) => {
 };
 
 const initUploadModal = () => {
-  uploadFile.addEventListener('change', onUploadFileChange);
+  uploadFile.addEventListener('change', onFileInputChange);
   uploadForm.addEventListener('submit', onFormSubmit);
   smallerButton.addEventListener('click', onSmallerButtonClick);
   biggerButton.addEventListener('click', onBiggerButtonClick);
