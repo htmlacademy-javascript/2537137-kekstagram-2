@@ -8,60 +8,57 @@ const FILTER = {
   discussed: 'filter-discussed',
 };
 
-const SORTFUNC = {
+const SORT_FUNCTION = {
   random: () => 0.5 - Math.random(),
   discussed: (a, b) => b.comments.length - a.comments.length,
 };
 
-let currentFilter = FILTER.default;
-const filterElement = document.querySelector('.img-filters');
 const ACTIVE_BUTTON_CLASS = 'img-filters__button--active';
 
-function onFilterChange(evt) {
+let currentFilter = FILTER.default;
+const filterElement = document.querySelector('.img-filters');
+const pictureContainer = document.querySelector('.pictures');
+
+const deletePictures = () => {
+  const oldPictures = pictureContainer.querySelectorAll('.picture');
+  oldPictures.forEach((picture) => picture.remove());
+};
+
+const applyFilter = (pictures) => {
+  switch (currentFilter) {
+    case FILTER.random:
+      return pictures.toSorted(SORT_FUNCTION.random).slice(0, 10);
+    case FILTER.discussed:
+      return pictures.toSorted(SORT_FUNCTION.discussed);
+    case FILTER.default:
+      return pictures;
+    default:
+      throw new Error(`Unknown filter: ${currentFilter}`);
+  }
+};
+
+const filterPictures = debounce((pictures, renderCb) => {
+  deletePictures();
+  renderCb(applyFilter(pictures));
+}, RERENDER_DELAY);
+
+const onFilterChange = (evt, pictures, renderCb) => {
   const targetButton = evt.target.closest('button');
 
   if (!targetButton || targetButton.id === currentFilter) {
     return;
   }
-  console.log('button check passed');
+
   document.querySelector(`.${ACTIVE_BUTTON_CLASS}`)?.classList.remove(ACTIVE_BUTTON_CLASS);
   targetButton.classList.add(ACTIVE_BUTTON_CLASS);
   currentFilter = targetButton.id;
-}
 
-function applyFilter(pictures) {
-  console.log('filter works');
-  const filteredPictures = () => {
-    console.log(pictures);
-    switch (currentFilter) {
-      case FILTER.random:
-        return pictures.toSorted(SORTFUNC.random).slice(0, 10);
-      case FILTER.discussed:
-        return pictures.toSorted(SORTFUNC.discussed);
-      default:
-        return pictures;
-    }
-  };
+  filterPictures(pictures, renderCb);
+};
 
-  const pictureContainer = document.querySelector('.pictures');
-  const oldPictures = pictureContainer.querySelectorAll('.picture');
-  oldPictures.forEach((picture) => picture.remove());
-
-  return filteredPictures();
-}
-
-function configFilter(picturesData, firstCb, secondCb) {
+function configFilter(picturesData, renderCb) {
   filterElement.classList.remove('img-filters--inactive');
-  filterElement.addEventListener('click', (evt) => {
-    onFilterChange(evt);
-    const result = applyFilter(picturesData);
-    // debounce(
-    //   () => firstCb(result),
-    //   RERENDER_DELAY,
-    // );
-    firstCb(result);
-    secondCb(result);
-  });
+  filterElement.addEventListener('click', (evt) => onFilterChange(evt, picturesData, renderCb));
 }
 
 export { configFilter };
