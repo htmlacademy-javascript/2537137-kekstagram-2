@@ -60,6 +60,7 @@ function closeBigPicture() {
   bigPictureCancel.removeEventListener('click', closeBigPicture);
   document.removeEventListener('keydown', isEscKey);
   commentsLoader.removeEventListener('click', loadNextComments);
+  document.body.classList.remove('modal-open');
 }
 
 const renderBigPicture = (currentPhoto) => {
@@ -93,6 +94,7 @@ const initPreview = (photos) => {
     if (currentPhoto) {
       evt.preventDefault();
       renderBigPicture(currentPhoto);
+      document.body.classList.add('modal-open');
     }
   });
 };
