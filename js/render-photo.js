@@ -13,9 +13,9 @@ const commentsItem = bigPicture.querySelector('.social__comment');
 const caption = bigPicture.querySelector('.social__caption');
 const bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 
-const isEscKey = (evt) => {
+const onEscKeydown = (evt) => {
   if(evt.key === 'Escape') {
-    closeBigPicture();
+    onBigPictureCancelClick();
   }
 };
 
@@ -40,7 +40,7 @@ const renderComments = (comments) => {
   commentsList.append(commentsFragment);
 };
 
-const loadNextComments = () => {
+const onCommentsButtonClick = () => {
   const nextComments = currentComments.slice(shownCommentsCount, shownCommentsCount + COMMENTS_PER_CLICK);
   renderComments(nextComments);
 
@@ -55,11 +55,11 @@ const loadNextComments = () => {
   }
 };
 
-function closeBigPicture() {
+function onBigPictureCancelClick () {
   bigPicture.classList.add('hidden');
-  bigPictureCancel.removeEventListener('click', closeBigPicture);
-  document.removeEventListener('keydown', isEscKey);
-  commentsLoader.removeEventListener('click', loadNextComments);
+  bigPictureCancel.removeEventListener('click', onBigPictureCancelClick);
+  document.removeEventListener('keydown', onEscKeydown);
+  commentsLoader.removeEventListener('click', onCommentsButtonClick);
   document.body.classList.remove('modal-open');
 }
 
@@ -74,11 +74,11 @@ const renderBigPicture = (currentPhoto) => {
 
   bigPicture.classList.remove('hidden');
 
-  loadNextComments();
+  onCommentsButtonClick();
 
-  commentsLoader.addEventListener('click', loadNextComments);
-  bigPictureCancel.addEventListener('click', closeBigPicture);
-  document.addEventListener('keydown', isEscKey);
+  commentsLoader.addEventListener('click', onCommentsButtonClick);
+  bigPictureCancel.addEventListener('click', onBigPictureCancelClick);
+  document.addEventListener('keydown', onEscKeydown);
 };
 
 const initPreview = (photos) => {
