@@ -2,6 +2,7 @@ import { pluralize } from '../util.js';
 
 const MAX_HASHTAGS = 5;
 const MAX_SYMBOLS = 20;
+const MAX_LENGTH = 140;
 
 const RULES = [
   {
@@ -64,14 +65,16 @@ const isHashtagValid = (value) => {
 
 const validateForm = () => pristine.validate();
 
+const resetValidation = () => pristine.reset();
+
 const setupValidation = () => {
   pristine.addValidator(hashtagInput, isHashtagValid, getErrorMessage, 2, false);
 
   pristine.addValidator(commentInput, (value) => {
-    const hasValue = value.length <= 140;
+    const hasValue = value.length <= MAX_LENGTH;
 
     return hasValue;
-  }, 'Текст не может быть длиннее 140 символов');
+  }, `Текст не может быть длиннее ${ MAX_LENGTH } символов`);
 };
 
-export { setupValidation, validateForm };
+export { setupValidation, validateForm, resetValidation };

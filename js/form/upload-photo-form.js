@@ -1,4 +1,4 @@
-import { setupValidation, validateForm } from './validation.js';
+import { setupValidation, validateForm, resetValidation } from './validation.js';
 import { initEffectsSlider, resetEffects } from './effects-slider.js';
 import { isEscKey } from '../util.js';
 import { sendData } from '../api.js';
@@ -20,8 +20,6 @@ const pageBody = document.querySelector('body');
 const uploadFile = uploadForm.querySelector('#upload-file');
 const photoEditorForm = uploadForm.querySelector('.img-upload__overlay');
 const photoEditorResetButton = photoEditorForm.querySelector('#upload-cancel');
-const hashtagInput = uploadForm.querySelector('.text__hashtags');
-const commentInput = uploadForm.querySelector('.text__description');
 const smallerButton = uploadForm.querySelector('.scale__control--smaller');
 const biggerButton = uploadForm.querySelector('.scale__control--bigger');
 const imgPreview = uploadForm.querySelector('.img-upload__preview img');
@@ -35,8 +33,7 @@ const onPhotoEditorResetButtonClick = () => closePhotoEditor();
 
 const onEscKeydown = (evt) => {
   if(isEscKey(evt)
-  && document.activeElement !== hashtagInput
-  && document.activeElement !== commentInput
+  && !document.body.classList.contains('has-error')
   ) {
     evt.stopPropagation();
     uploadForm.reset();
@@ -80,6 +77,8 @@ function closePhotoEditor() {
   currentScale = DEFAULT_SCALE;
   updateImageScale();
   resetEffects();
+  resetValidation();
+  document.body.classList.remove('has-error');
 }
 
 const onSmallerButtonClick = () => {
@@ -118,6 +117,7 @@ const onFormSubmit = async (evt) => {
       showNotification('success');
     } catch (error) {
       showNotification('error');
+      document.body.classList.add('has-error');
     } finally {
       enableButton(SUBMIT_BUTTON_TEXT.IDLE);
     }
