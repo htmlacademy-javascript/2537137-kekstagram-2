@@ -20,8 +20,6 @@ const pageBody = document.querySelector('body');
 const uploadFile = uploadForm.querySelector('#upload-file');
 const photoEditorForm = uploadForm.querySelector('.img-upload__overlay');
 const photoEditorResetButton = photoEditorForm.querySelector('#upload-cancel');
-const hashtagInput = uploadForm.querySelector('.text__hashtags');
-const commentInput = uploadForm.querySelector('.text__description');
 const smallerButton = uploadForm.querySelector('.scale__control--smaller');
 const biggerButton = uploadForm.querySelector('.scale__control--bigger');
 const imgPreview = uploadForm.querySelector('.img-upload__preview img');
@@ -35,8 +33,6 @@ const onPhotoEditorResetButtonClick = () => closePhotoEditor();
 
 const onEscKeydown = (evt) => {
   if(isEscKey(evt)
-  && document.activeElement !== hashtagInput
-  && document.activeElement !== commentInput
   && !document.body.classList.contains('has-error')
   ) {
     evt.stopPropagation();
@@ -82,7 +78,6 @@ function closePhotoEditor() {
   updateImageScale();
   resetEffects();
   resetValidation();
-  document.body.classList.remove('has-error');
 }
 
 const onSmallerButtonClick = () => {

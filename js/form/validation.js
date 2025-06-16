@@ -10,7 +10,7 @@ const RULES = [
     error: 'Хэштеги разделяются пробелами',
   },
   {
-    check: (hashtags) => hashtags.some((item, num, array) => array.includes(item, num + 1)),
+    check: (hashtags) => hashtags.some((item, num, items) => items.includes(item, num + 1)),
     error: 'Один и тот же хэштег не может быть использован дважды',
   },
   {
