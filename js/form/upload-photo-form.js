@@ -78,7 +78,6 @@ function closePhotoEditor() {
   updateImageScale();
   resetEffects();
   resetValidation();
-  document.body.classList.remove('has-error');
 }
 
 const onSmallerButtonClick = () => {

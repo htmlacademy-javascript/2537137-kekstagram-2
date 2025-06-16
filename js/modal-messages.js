@@ -38,6 +38,7 @@ const showNotification = (type) => {
   const closeNotification = () => {
     node.remove();
     document.removeEventListener('keydown', onDocumentKeydown);
+    document.body.classList.remove('has-error');
   };
 
   node.addEventListener('click', (evt) => {
